@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PCOS Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            padding: 20px;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+        img.logo {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="{{ url_for('static', filename='Fempredictlogo.png') }}" class="logo" alt="Logo">
+        <h2>Predict PCOS</h2>
+        <form method="POST" action="/predict">
+            <input type="number" step="any" name="age" placeholder="Age (years)" required>
+            <input type="number" step="any" name="weight" placeholder="Weight (kg)" required>
+            <input type="number" step="any" name="height" placeholder="Height (cm)" required>
+            <select name="blood_group" required>
+                <option value="">Select Blood Group</option>
+                <option value="11">A+</option>
+                <option value="12">A-</option>
+                <option value="13">B+</option>
+                <option value="14">B-</option>
+                <option value="15">O+</option>
+                <option value="16">O-</option>
+                <option value="17">AB+</option>
+                <option value="18">AB-</option>
+            </select>
+            <select name="period_freq" required>
+                <option value="1">Regular</option>
+                <option value="2">Irregular</option>
+            </select>
+            {% for symptom in ['weight_gain', 'hair_growth', 'skin_darkening', 'hair_loss', 'acne', 'fast_food', 'exercise', 'mood_swings', 'regular_periods'] %}
+                <select name="{{ symptom }}" required>
+                    <option value="0">No ({{ symptom.replace('_',' ').capitalize() }})</option>
+                    <option value="1">Yes ({{ symptom.replace('_',' ').capitalize() }})</option>
+                </select>
+            {% endfor %}
+            <input type="number" name="period_length" placeholder="Period Length (Days)" required>
+            <button type="submit">Predict</button>
+        </form>
+    </div>
+</body>
+</html>
